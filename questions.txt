@@ -1,0 +1,75 @@
+1) What is a socket?
+	A network socket is an internal endpoint for sending or receiving data 
+	within a node on a computer network.
+
+
+2) What is the difference between the domains AF_INET and AF_UNIX?
+	AF_INET is IPv4 Internet protocols, while AF_UNIX is Local communication.
+
+
+3) What is the difference between SOCK_STREAM and SOCK_DGRAM?
+	TCP almost always uses SOCK_STREAM and UDP uses SOCK_DGRAM. 
+	See man page for more.
+
+
+4) Why is it important to clear all the values the addrinfo struct before using it in getaddrinfo?
+	getaddrinfo() will use the information in addrinfo struct when creating the
+	linked list, we don't want additional garbage value in the struct unless
+	the value is specifically set. 
+
+
+5) What are ai_family and ai_socktype?
+	ai_family field  specifies  the  desired address family for the
+    returned addresses.  Valid values for  this  field  include
+    AF_INET  and  AF_INET6.
+    ai_socktype field specifies the preferred socket type, for example
+    SOCK_STREAM  or  SOCK_DGRAM.
+
+
+6) What does getaddrinfo do?
+	int getaddrinfo(const char *node, const char *service,
+                    const struct addrinfo *hints, struct addrinfo **res);
+    Given node and service, which identify an Internet host and a  service,
+    getaddrinfo()  returns  one  or more addrinfo structures, each of which
+    contains an Internet address that can be specified in a call to bind(2)
+    or  connect(2).
+
+
+7) What does connect do?
+	int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+	The  connect()  system call connects the socket referred to by the file
+	descriptor sockfd to the address specified by addr.
+
+
+8) What is setsockopt?
+	setsockopt() manipulates options for the socketreferred to by the 
+	file descriptor sockfd.
+
+
+9) What does bind do?
+	The bind call associates an abstract socket with an actual network 
+	interface and port. It is possible to call bind on a TCP client however 
+	it's unusually unnecessary to specify the outgoing port.
+
+
+10) What does listen do?
+	The listen call specifies the queue size for the number of incoming, 
+	unhandled connections i.e. that have not yet been assigned a network 
+	descriptor by accept Typical values for a high performance server are 128 
+	or more.
+
+
+11) What does accept do?
+	Once the server socket has been initialized the server calls accept to wait 
+	for new connections. Unlike socket bind and listen, this call will block. 
+	i.e. if there are no new connections, this call will block and only return 
+	when a new client connects. The returned TCP socket is associated with a 
+	particular tuple (client IP, client port, server IP, server port) and will 
+	be used for all future incoming and outgoing TCP packets that match this 
+	tuple.
+
+	Note the accept call returns a new file descriptor. This file descriptor is 
+	specific to a particular client. It is common programming mistake to use 
+	the original server socket descriptor for server I/O and then wonder why 
+	networking code has failed.
+
